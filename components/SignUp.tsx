@@ -9,7 +9,7 @@ const SignUpPage = () => {
     const [error, setError] = useState('');
     const {login} = useContext(UserContext);
     const router = useRouter();
-    const apiBaseUrl = process.env.NEXT_PUBLIC_USER_SERVER_API_BASE_URL || 'http://localhost:9080';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_USER_SERVER_API_BASE_URL || 'http://user-service:8080';
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

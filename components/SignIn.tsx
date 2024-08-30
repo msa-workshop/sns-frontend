@@ -11,7 +11,7 @@ const SignIn = () => {
     const [password, setPassword] = useState('');
     const {login} = useContext(UserContext);
     const router = useRouter(); // added this line
-    const apiBaseUrl = process.env.NEXT_PUBLIC_USER_SERVER_API_BASE_URL || 'http://localhost:9080';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_USER_SERVER_API_BASE_URL || 'http://user-service:8080';
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();

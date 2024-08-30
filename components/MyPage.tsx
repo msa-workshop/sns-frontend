@@ -13,7 +13,7 @@ const MyPage: React.FC = () => {
     const [followers, setFollowers] = useState<UserProfile[]>([]);
     const [followings, setFollowings] = useState<UserProfile[]>([]);
     const router = useRouter();
-    const apiBaseUrl = process.env.NEXT_PUBLIC_USER_SERVER_API_BASE_URL || 'http://localhost:9080';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_USER_SERVER_API_BASE_URL || 'http://user-service:8080';
     const handleLogout = () => {
         logout();
         // You might want to navigate to a login or home page after logout

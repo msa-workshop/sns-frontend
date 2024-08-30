@@ -9,8 +9,8 @@ const PostUploader: React.FC = () => {
     const [imageId, setImageId] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const {user} = useContext(UserContext); // Replace with your actual context
-    const apiBaseUrl = process.env.NEXT_PUBLIC_FEED_SERVER_API_BASE_URL || 'http://localhost:8080';
-    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_SERVER_API_BASE_URL || 'http://localhost:6080';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_FEED_SERVER_API_BASE_URL || 'http://post-service:8080';
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_SERVER_API_BASE_URL || 'http://image-service:8080';
     const router = useRouter();
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
