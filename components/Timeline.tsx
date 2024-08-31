@@ -9,7 +9,7 @@ interface TimelineProps {
 }
 
 const Timeline: React.FC<TimelineProps> = ({timelineId}) => {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_TIMELINE_SERVER_API_BASE_URL || 'http://localhost:8080';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_TIMELINE_SERVER_API_BASE_URL || 'http://localhost:7080';
     const userBaseUrl = process.env.NEXT_PUBLIC_USER_SERVER_API_BASE_URL || 'http://localhost:9080';
     const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_SERVER_API_BASE_URL || 'http://localhost:6080';
 
@@ -80,12 +80,51 @@ const Timeline: React.FC<TimelineProps> = ({timelineId}) => {
 
     useEffect(() => {
         setFeeds([]);
-    
+        if (timelineId && timelineId !== "") {
+            if (timelineId === "all") {
                 setIsFollow(false);
-                fetch(`${apiBaseUrl}/api/posts`)
+                fetch(`${apiBaseUrl}/api/timeline`)
                     .then((response) => response.json())
                     .then((data) => setFeeds(data))
                     .catch((error) => console.error('Error fetching data:', error));
+            } else if (timelineId != user?.userId) {
+                if (user?.userId) {
+                    fetch(`${userBaseUrl}/api/follows/follow/` + timelineId + '/' + user?.userId)
+                        .then((response) => response.text())
+                        .then(follow => setIsFollow(follow === 'true'))
+                        .catch((error) => console.error('Error fetching user :', error));
+                }
+                fetch(`${apiBaseUrl}/api/timeline/` + timelineId + '?followingFeed=false')
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setFeeds(data)
+                        if (data.length > 0 && data[0].uploaderId == timelineId) {
+                            setTimelineName(data[0].uploaderName)
+                        }
+                    })
+                    .catch((error) => console.error('Error fetching data:', error));
+            } else {
+                setIsFollow(false);
+                fetch(`${apiBaseUrl}/api/timeline/` + user.userId + '?followingFeed=true' + (isChecked ? '&randomPost=0.5' : ''))
+                    .then((response) => response.json())
+                    .then((data) => setFeeds(data))
+                    .catch((error) => console.error('Error fetching data:', error));
+            }
+
+        } else {
+            if (user?.userId) {
+                setIsFollow(false);
+                fetch(`${apiBaseUrl}/api/timeline/` + user.userId + '?followingFeed=true' + (isChecked ? '&randomPost=0.5' : ''))
+                    .then((response) => response.json())
+                    .then((data) => setFeeds(data))
+                    .catch((error) => console.error('Error fetching data:', error));
+            } else {
+                fetch(`${apiBaseUrl}/api/timeline/none?randomPost=1.0`)
+                    .then((response) => response.json())
+                    .then((data) => setFeeds(data))
+                    .catch((error) => console.error('Error fetching data:', error));
+            }
+        }
     
     }, [timelineId, user, isChecked]);
 
