@@ -9,9 +9,9 @@ interface TimelineProps {
 }
 
 const Timeline: React.FC<TimelineProps> = ({timelineId}) => {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_TIMELINE_SERVER_API_BASE_URL || 'http://post-service:8080';
-    const userBaseUrl = process.env.NEXT_PUBLIC_USER_SERVER_API_BASE_URL || 'http://user-service:8080';
-    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_SERVER_API_BASE_URL || 'http://image-service:8080';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_TIMELINE_SERVER_API_BASE_URL || 'http://localhost:8080';
+    const userBaseUrl = process.env.NEXT_PUBLIC_USER_SERVER_API_BASE_URL || 'http://localhost:9080';
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_SERVER_API_BASE_URL || 'http://localhost:6080';
 
     const [feeds, setFeeds] = useState<Feed[]>([]);
     const [popupVisible, setPopupVisible] = useState<{ [key: string]: boolean }>({});
@@ -80,13 +80,13 @@ const Timeline: React.FC<TimelineProps> = ({timelineId}) => {
 
     useEffect(() => {
         setFeeds([]);
-        if (user?.userId) {
+    
                 setIsFollow(false);
-                fetch(`${apiBaseUrl}/api/posts/user/${user?.userId}`)
+                fetch(`${apiBaseUrl}/api/posts`)
                     .then((response) => response.json())
                     .then((data) => setFeeds(data))
                     .catch((error) => console.error('Error fetching data:', error));
-        }
+    
     }, [timelineId, user, isChecked]);
 
     return (
